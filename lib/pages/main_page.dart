@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:trilhaflutterdio/pages/card_page.dart';
 import 'package:trilhaflutterdio/pages/image_assets.dart';
-import 'package:trilhaflutterdio/pages/pagina3.dart';
+import 'package:trilhaflutterdio/pages/list_view.dart';
+import 'package:trilhaflutterdio/pages/list_view_horizontal_page.dart';
 import 'package:trilhaflutterdio/shared/widgets/custom_drawer.dart';
 
 class MainPage extends StatefulWidget {
@@ -31,8 +32,14 @@ class _MainPageState extends State<MainPage> {
                         posicaoPagina = value;
                       });
                     },
-                    children: const [CardPage(), ImageAssets(), Pagina3()])),
+                    children: const [
+                  CardPage(),
+                  ImageAssets(),
+                  ListViewPage(),
+                  ListViewHorizontal()
+                ])),
             BottomNavigationBar(
+                type: BottomNavigationBarType.fixed,
                 onTap: (value) {
                   setState(() {
                     controller.jumpToPage(value);
@@ -42,10 +49,13 @@ class _MainPageState extends State<MainPage> {
                 currentIndex: posicaoPagina,
                 items: const [
                   BottomNavigationBarItem(
-                      label: "Pag1", icon: Icon(Icons.home)),
-                  BottomNavigationBarItem(label: "Pag2", icon: Icon(Icons.add)),
+                      label: "Cards", icon: Icon(Icons.home)),
                   BottomNavigationBarItem(
-                      label: "Pag3", icon: Icon(Icons.person))
+                      label: "Imagens", icon: Icon(Icons.add)),
+                  BottomNavigationBarItem(
+                      label: "ListView", icon: Icon(Icons.person)),
+                  BottomNavigationBarItem(
+                      label: "ListViewHorizontal", icon: Icon(Icons.list))
                 ])
           ],
         ),
