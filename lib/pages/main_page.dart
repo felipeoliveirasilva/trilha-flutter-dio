@@ -3,6 +3,7 @@ import 'package:trilhaflutterdio/pages/card_page.dart';
 import 'package:trilhaflutterdio/pages/image_assets.dart';
 import 'package:trilhaflutterdio/pages/list_view.dart';
 import 'package:trilhaflutterdio/pages/list_view_horizontal_page.dart';
+import 'package:trilhaflutterdio/pages/tarefa_page.dart';
 import 'package:trilhaflutterdio/shared/widgets/custom_drawer.dart';
 
 class MainPage extends StatefulWidget {
@@ -36,7 +37,8 @@ class _MainPageState extends State<MainPage> {
                   CardPage(),
                   ImageAssets(),
                   ListViewPage(),
-                  ListViewHorizontal()
+                  ListViewHorizontal(),
+                  TarefaPage()
                 ])),
             BottomNavigationBar(
                 type: BottomNavigationBarType.fixed,
@@ -55,7 +57,9 @@ class _MainPageState extends State<MainPage> {
                   BottomNavigationBarItem(
                       label: "ListView", icon: Icon(Icons.person)),
                   BottomNavigationBarItem(
-                      label: "ListViewHorizontal", icon: Icon(Icons.list))
+                      label: "ListViewHorizontal", icon: Icon(Icons.image)),
+                  BottomNavigationBarItem(
+                      label: "Tarefas", icon: Icon(Icons.list))
                 ])
           ],
         ),
