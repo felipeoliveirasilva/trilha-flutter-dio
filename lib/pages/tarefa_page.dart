@@ -14,9 +14,16 @@ class _TarefaPageState extends State<TarefaPage> {
   var tarefaRepository = TarefaRepository();
   TextEditingController descricaoController = TextEditingController();
   var _tarefas = const <Tarefa>[];
+  var apenasNaoConcluidos = false;
 
   void obterTarefas() async {
-    _tarefas = await tarefaRepository.listarTarefas();
+    if (apenasNaoConcluidos) {
+      _tarefas = await tarefaRepository.listarTarefasNaoConcluidas();
+    } else {
+      _tarefas = await tarefaRepository.listarTarefas();
+    }
+
+    setState(() {});
   }
 
   @override
@@ -35,7 +42,7 @@ class _TarefaPageState extends State<TarefaPage> {
                 context: context,
                 builder: (BuildContext bc) {
                   return AlertDialog(
-                    title: Text("Adicionar tarefa"),
+                    title: const Text("Adicionar tarefa"),
                     content: TextField(
                       controller: descricaoController,
                     ),
@@ -44,7 +51,7 @@ class _TarefaPageState extends State<TarefaPage> {
                           onPressed: () {
                             Navigator.pop(context);
                           },
-                          child: Text("Cancelar")),
+                          child: const Text("Cancelar")),
                       TextButton(
                           onPressed: () async {
                             await tarefaRepository.adicionarTarefa(
@@ -52,18 +59,62 @@ class _TarefaPageState extends State<TarefaPage> {
                             Navigator.pop(context);
                             setState(() {});
                           },
-                          child: Text("Salvar"))
+                          child: const Text("Salvar"))
                     ],
                   );
                 });
           },
-          child: Icon(Icons.add),
+          child: const Icon(Icons.add),
         ),
-        body: ListView.builder(
-            itemCount: _tarefas.length,
-            itemBuilder: (BuildContext bc, int index) {
-              var tarefa = _tarefas[index];
-              return Text(tarefa.getDescricao());
-            }));
+        body: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Column(
+            children: [
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Apenas não concluídos",
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    Switch(
+                      value: apenasNaoConcluidos,
+                      onChanged: (bool value) {
+                        apenasNaoConcluidos = value;
+                        obterTarefas();
+                      },
+                    )
+                  ],
+                ),
+              ),
+              Expanded(
+                child: ListView.builder(
+                    itemCount: _tarefas.length,
+                    itemBuilder: (BuildContext bc, int index) {
+                      var tarefa = _tarefas[index];
+                      return Dismissible(
+                        key: Key(tarefa.id),
+                        onDismissed: (DismissDirection dismissDirection) async {
+                          await tarefaRepository.removerTarefa(tarefa.id);
+                          obterTarefas();
+                        },
+                        child: ListTile(
+                          title: Text(tarefa.descricao),
+                          trailing: Switch(
+                              onChanged: (bool value) async {
+                                await tarefaRepository.alterarTarefa(
+                                    tarefa.id, value);
+                                obterTarefas();
+                              },
+                              value: tarefa.concluido),
+                        ),
+                      );
+                    }),
+              ),
+            ],
+          ),
+        ));
   }
 }
