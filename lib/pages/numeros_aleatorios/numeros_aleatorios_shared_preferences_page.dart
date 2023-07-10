@@ -1,21 +1,21 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:trilhaflutterdio/services/app_storage_service.dart';
 
-class NumerosAleatoriosPage extends StatefulWidget {
-  const NumerosAleatoriosPage({super.key});
+class NumerosAleatoriosSharedPreferencesPage extends StatefulWidget {
+  const NumerosAleatoriosSharedPreferencesPage({super.key});
 
   @override
-  State<NumerosAleatoriosPage> createState() => _NumerosAleatoriosPageState();
+  State<NumerosAleatoriosSharedPreferencesPage> createState() =>
+      _NumerosAleatoriosSharedPreferencesPageState();
 }
 
-class _NumerosAleatoriosPageState extends State<NumerosAleatoriosPage> {
+class _NumerosAleatoriosSharedPreferencesPageState
+    extends State<NumerosAleatoriosSharedPreferencesPage> {
   int? numeroGerado;
   int? quantidadeCliques;
-  final CHAVE_NUMERO_ALEATORIO = "numero_aleatorio";
-  final CHAVE_QUANTIDADE_CLIQUES = "quantidade_cliques";
-  late SharedPreferences storage;
+  AppStorageService storage = AppStorageService();
 
   @override
   void initState() {
@@ -24,11 +24,9 @@ class _NumerosAleatoriosPageState extends State<NumerosAleatoriosPage> {
   }
 
   void carregarDados() async {
-    storage = await SharedPreferences.getInstance();
-    setState(() {
-      numeroGerado = storage.getInt(CHAVE_NUMERO_ALEATORIO);
-      quantidadeCliques = storage.getInt(CHAVE_QUANTIDADE_CLIQUES);
-    });
+    numeroGerado = await storage.getNumeroAleatorio();
+    quantidadeCliques = await storage.getQuantidadeCliques();
+    setState(() {});
   }
 
   @override
@@ -37,26 +35,26 @@ class _NumerosAleatoriosPageState extends State<NumerosAleatoriosPage> {
       child: Scaffold(
         appBar: AppBar(title: const Text("Gerador de números aleatorios")),
         floatingActionButton: FloatingActionButton(
-            child: Icon(Icons.add),
+            child: const Icon(Icons.add),
             onPressed: () async {
               var random = Random();
               setState(() {
                 numeroGerado = random.nextInt(1000);
                 quantidadeCliques = (quantidadeCliques ?? 0) + 1;
               });
-              storage.setInt(CHAVE_NUMERO_ALEATORIO, numeroGerado!);
-              storage.setInt(CHAVE_QUANTIDADE_CLIQUES, quantidadeCliques!);
+              storage.setNumeroAleatorio(numeroGerado!);
+              storage.setQuantidadeCliques(quantidadeCliques!);
             }),
         body: Container(
           alignment: Alignment.center,
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             Text(
               numeroGerado == null ? "" : numeroGerado.toString(),
-              style: TextStyle(fontSize: 22),
+              style: const TextStyle(fontSize: 22),
             ),
             Text(
               quantidadeCliques == null ? "" : quantidadeCliques.toString(),
-              style: TextStyle(fontSize: 22),
+              style: const TextStyle(fontSize: 22),
             )
           ]),
         ),
