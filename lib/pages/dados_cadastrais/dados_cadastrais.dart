@@ -3,7 +3,7 @@ import 'package:trilhaflutterdio/repositories/linguagens_repository.dart';
 import 'package:trilhaflutterdio/services/app_storage_service.dart';
 import 'package:trilhaflutterdio/shared/widgets/text_label.dart';
 
-import '../repositories/nivel_repository.dart';
+import '../../repositories/nivel_repository.dart';
 
 class DadosCadastrais extends StatefulWidget {
   const DadosCadastrais({super.key});
