@@ -4,6 +4,7 @@ import 'package:trilhaflutterdio/pages/image_assets.dart';
 import 'package:trilhaflutterdio/pages/list_view.dart';
 import 'package:trilhaflutterdio/pages/list_view_horizontal_page.dart';
 import 'package:trilhaflutterdio/pages/tarefa_page/tarefa_page_hive.dart';
+import 'package:trilhaflutterdio/pages/tarefa_page/tarefa_page_sqlite.dart';
 import 'package:trilhaflutterdio/shared/widgets/custom_drawer.dart';
 
 class MainPage extends StatefulWidget {
@@ -38,7 +39,7 @@ class _MainPageState extends State<MainPage> {
                   ImageAssets(),
                   ListViewPage(),
                   ListViewHorizontal(),
-                  TarefaPage()
+                  TarefaSQLitePage()
                 ])),
             BottomNavigationBar(
                 type: BottomNavigationBarType.fixed,
